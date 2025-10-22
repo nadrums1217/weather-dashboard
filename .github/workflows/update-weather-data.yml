@@ -1,4 +1,4 @@
-name: Update Weather Data
+name: Update Weather Data and Deploy Dashboard
 
 on:
   schedule:
@@ -9,6 +9,8 @@ on:
 jobs:
   update-data:
     runs-on: ubuntu-latest
+    outputs:
+      new_data_committed: ${{ steps.commit_and_push.outputs.committed }}
     
     steps:
       - name: Checkout repository
@@ -40,12 +42,31 @@ jobs:
           git config --local user.name "GitHub Action"
 
       - name: Commit and push changes
+        id: commit_and_push
         run: |
           if [ -n "$(git status --porcelain)" ]; then
             git add public/*.json
             git commit -m "Update weather data - $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
             git push
+            echo "committed=true" >> $GITHUB_OUTPUT
           else
             echo "No changes to commit"
+            echo "committed=false" >> $GITHUB_OUTPUT
           fi
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: update-data
+    if: always() # Ensure deploy runs even if update-data had no new data, to keep gh-pages up to date
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true # Overwrites gh-pages branch each time, ensuring clean deployment
