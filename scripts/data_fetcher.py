@@ -128,6 +128,8 @@ def main():
         )
         if forecast_data:
             save_data(forecast_data, f'{location_key}_forecast.json')
+        else:
+            print(f"✗ Skipping save for {location_key}_forecast.json due to fetch error.")
         
         # Fetch historical data
         historical_data = fetch_historical_data(
@@ -137,6 +139,8 @@ def main():
         )
         if historical_data:
             save_data(historical_data, f'{location_key}_historical.json')
+        else:
+            print(f"✗ Skipping save for {location_key}_historical.json due to fetch error.")
 
         # Fetch yearly daily data for monthly averages
         yearly_daily_data = fetch_yearly_daily_data(
@@ -146,6 +150,8 @@ def main():
         )
         if yearly_daily_data:
             save_data(yearly_daily_data, f'{location_key}_yearly_daily.json')
+        else:
+            print(f"✗ Skipping save for {location_key}_yearly_daily.json due to fetch error.")
     
     print("\n" + "-" * 50)
     print(f"Data fetch completed at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
