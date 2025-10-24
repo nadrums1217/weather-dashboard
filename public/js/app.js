@@ -37,9 +37,9 @@ class WeatherDashboard {
                 fetch('./oneonta_forecast.json').then(r => r.json()),
                 fetch('./oneonta_historical.json').then(r => r.json()),
                 fetch('./oneonta_yearly_daily.json').then(r => r.json()),
-                fetch('./greenville_forecast.json').then(r => r.json()),
-                fetch('./greenville_historical.json').then(r => r.json()),
-                fetch('./greenville_yearly_daily.json').then(r => r.json())
+                fetch('./greenville_forecast.json').then(r => r.json()).catch(e => { console.warn("Greenville Forecast data failed to load:", e); return null; }),
+                fetch('./greenville_historical.json').then(r => r.json()).catch(e => { console.warn("Greenville Historical data failed to load:", e); return null; }),
+                fetch('./greenville_yearly_daily.json').then(r => r.json()).catch(e => { console.warn("Greenville Yearly data failed to load:", e); return null; })
             ]);
 
             this.oneontaForecast = oneontaForecast;
@@ -92,9 +92,14 @@ class WeatherDashboard {
         this.displayHourlyForecast('oneonta', this.oneontaForecast, currentHourIndex);
         this.displaySevenDayForecast('oneonta', this.oneontaForecast);
 
-        this.displayLocationCurrent('greenville', this.greenvilleForecast, currentHourIndex);
-        this.displayHourlyForecast('greenville', this.greenvilleForecast, currentHourIndex);
-        this.displaySevenDayForecast('greenville', this.greenvilleForecast);
+        if (this.greenvilleForecast) {
+            this.displayLocationCurrent('greenville', this.greenvilleForecast, currentHourIndex);
+            this.displayHourlyForecast('greenville', this.greenvilleForecast, currentHourIndex);
+            this.displaySevenDayForecast('greenville', this.greenvilleForecast);
+        } else {
+            document.getElementById('greenville-card').innerHTML = '<div class="error-message">Greenville data not available. Please check the data source.</div>';
+        }
+        }
 
         this.displayPrecipitationComparison(currentHourIndex);
     }
