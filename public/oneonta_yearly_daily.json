@@ -1,7 +1,7 @@
 {
   "latitude": 42.425304,
   "longitude": -75.06607,
-  "generationtime_ms": 28.658270835876465,
+  "generationtime_ms": 14.871716499328613,
   "utc_offset_seconds": -18000,
   "timezone": "America/New_York",
   "timezone_abbreviation": "GMT-5",
@@ -744,8 +744,8 @@
       26.2,
       15.5,
       29.7,
-      24.8,
-      25.8
+      25.0,
+      26.5
     ]
   }
 }
