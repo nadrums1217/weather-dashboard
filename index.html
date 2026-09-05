@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard - Oneonta, NY & Greenville, SC</title>
+    <base href="/weather-dashboard/">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">⛅ Weather Dashboard</h1>
+                <p class="subtitle">Comparing Oneonta, NY and Greenville, SC</p>
+                <div class="last-updated">Last updated: <span id="last-updated">Loading...</span></div>
+            </div>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="current">Current & Forecast</button>
+            <button class="tab-btn" data-tab="historical">Historical Data</button>
+            <button class="tab-btn" data-tab="comparison">Comparison</button>
+        </div>
+
+        <!-- Current & Forecast Tab -->
+        <div id="current" class="tab-content active">
+            <!-- Current Conditions Grid -->
+            <div class="locations-grid">
+                <!-- Oneonta Card -->
+                <div class="location-card">
+                    <div class="card-header">
+                        <h2>📍 Oneonta, NY</h2>
+                        <div class="weather-icon" id="oneonta-weather-icon">☀️</div>
+                    </div>
+
+                    <!-- Main Temperature Section -->
+                    <div class="temp-section">
+                        <div class="current-temp" id="oneonta-current-temp">--°F</div>
+                        <div class="feels-like">Feels like <span id="oneonta-feels-like">--°F</span></div>
+                    </div>
+
+                    <!-- Sun Times -->
+                    <div class="sun-times">
+                        <div class="sun-item">
+                            <span class="sun-label">🌅 Sunrise</span>
+                            <span class="sun-value" id="oneonta-sunrise">--:--</span>
+                        </div>
+                        <div class="sun-item">
+                            <span class="sun-label">🌇 Sunset</span>
+                            <span class="sun-value" id="oneonta-sunset">--:--</span>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">💧</div>
+                            <div class="metric-label">Humidity</div>
+                            <div class="metric-value" id="oneonta-humidity">--%</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="oneonta-humidity-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">💨</div>
+                            <div class="metric-label">Wind Speed</div>
+                            <div class="metric-value" id="oneonta-wind-speed">-- mph</div>
+                            <div class="wind-direction" id="oneonta-wind-direction" style="transform: rotate(0deg)">↑</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">☀️</div>
+                            <div class="metric-label">UV Index</div>
+                            <div class="metric-value" id="oneonta-uv-index">--</div>
+                            <div class="uv-bar">
+                                <div class="uv-fill" id="oneonta-uv-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">🌧️</div>
+                            <div class="metric-label">Precipitation</div>
+                            <div class="metric-value" id="oneonta-current-precip">-- in</div>
+                            <div class="metric-label-small">Next 24h</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">🌡️</div>
+                            <div class="metric-label">Dew Point</div>
+                            <div class="metric-value" id="oneonta-dew-point">--°F</div>
+                            <div class="metric-label-small">Comfort</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">☀️</div>
+                            <div class="metric-label">Sunshine</div>
+                            <div class="metric-value" id="oneonta-current-sun">-- min</div>
+                            <div class="metric-label-small">Duration</div>
+                        </div>
+                    </div>
+
+                    <!-- Hourly Forecast -->
+                    <div class="hourly-section">
+                        <h3>📊 Hourly Forecast (Next 24 Hours)</h3>
+                        <div class="hourly-forecast" id="oneonta-hourly-forecast"></div>
+                    </div>
+                </div>
+
+                <!-- Greenville Card -->
+                <div class="location-card">
+                    <div class="card-header">
+                        <h2>📍 Greenville, SC</h2>
+                        <div class="weather-icon" id="greenville-weather-icon">☀️</div>
+                    </div>
+
+                    <!-- Main Temperature Section -->
+                    <div class="temp-section">
+                        <div class="current-temp" id="greenville-current-temp">--°F</div>
+                        <div class="feels-like">Feels like <span id="greenville-feels-like">--°F</span></div>
+                    </div>
+
+                    <!-- Sun Times -->
+                    <div class="sun-times">
+                        <div class="sun-item">
+                            <span class="sun-label">🌅 Sunrise</span>
+                            <span class="sun-value" id="greenville-sunrise">--:--</span>
+                        </div>
+                        <div class="sun-item">
+                            <span class="sun-label">🌇 Sunset</span>
+                            <span class="sun-value" id="greenville-sunset">--:--</span>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">💧</div>
+                            <div class="metric-label">Humidity</div>
+                            <div class="metric-value" id="greenville-humidity">--%</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="greenville-humidity-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">💨</div>
+                            <div class="metric-label">Wind Speed</div>
+                            <div class="metric-value" id="greenville-wind-speed">-- mph</div>
+                            <div class="wind-direction" id="greenville-wind-direction" style="transform: rotate(0deg)">↑</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">☀️</div>
+                            <div class="metric-label">UV Index</div>
+                            <div class="metric-value" id="greenville-uv-index">--</div>
+                            <div class="uv-bar">
+                                <div class="uv-fill" id="greenville-uv-bar" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">🌧️</div>
+                            <div class="metric-label">Precipitation</div>
+                            <div class="metric-value" id="greenville-current-precip">-- in</div>
+                            <div class="metric-label-small">Next 24h</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">🌡️</div>
+                            <div class="metric-label">Dew Point</div>
+                            <div class="metric-value" id="greenville-dew-point">--°F</div>
+                            <div class="metric-label-small">Comfort</div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon">☀️</div>
+                            <div class="metric-label">Sunshine</div>
+                            <div class="metric-value" id="greenville-current-sun">-- min</div>
+                            <div class="metric-label-small">Duration</div>
+                        </div>
+                    </div>
+
+                    <!-- Hourly Forecast -->
+                    <div class="hourly-section">
+                        <h3>📊 Hourly Forecast (Next 24 Hours)</h3>
+                        <div class="hourly-forecast" id="greenville-hourly-forecast"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7-Day Forecast Section -->
+            <div class="forecast-section">
+                <h2>📅 7-Day Forecast Comparison</h2>
+                <div class="seven-day-grid">
+                    <div class="forecast-column">
+                        <h3>Oneonta, NY</h3>
+                        <div class="seven-day-forecast" id="oneonta-seven-day"></div>
+                    </div>
+                    <div class="forecast-column">
+                        <h3>Greenville, SC</h3>
+                        <div class="seven-day-forecast" id="greenville-seven-day"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Precipitation Comparison -->
+            <div class="comparison-section">
+                <h2>🌧️ Precipitation Comparison (Next 24 Hours)</h2>
+                <div class="precip-comparison">
+                    <div class="precip-column">
+                        <h3>Oneonta, NY</h3>
+                        <div id="oneonta-precip-hourly" class="precip-hourly"></div>
+                    </div>
+                    <div class="precip-column">
+                        <h3>Greenville, SC</h3>
+                        <div id="greenville-precip-hourly" class="precip-hourly"></div>
+                    </div>
+                    <div class="precip-column">
+                        <h3>Difference</h3>
+                        <div id="precip-difference" class="precip-hourly"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historical Data Tab -->
+        <div id="historical" class="tab-content">
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h2>📈 Temperature Trends (Last 30 Days)</h2>
+                    <canvas id="historicalTempChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>💧 Precipitation (Last 30 Days)</h2>
+                    <canvas id="historicalPrecipChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>☀️ Sunshine Duration (Last 30 Days)</h2>
+                    <canvas id="historicalSunChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>💨 Wind Speed (Last 30 Days)</h2>
+                    <canvas id="historicalWindChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>💧 Humidity (Last 30 Days)</h2>
+                    <canvas id="historicalHumidityChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>☀️ UV Index (Last 30 Days)</h2>
+                    <canvas id="historicalUVChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>🌡️ Monthly Average Temperature Comparison</h2>
+                    <canvas id="monthlyAvgTempChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Tab -->
+        <div id="comparison" class="tab-content">
+            <div class="comparison-charts-grid">
+                <div class="chart-container">
+                    <h2>🌡️ Temperature Comparison (Next 7 Days)</h2>
+                    <canvas id="comparisonTempChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>🌧️ Precipitation Comparison (Next 7 Days)</h2>
+                    <canvas id="comparisonPrecipChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>☀️ Sunshine Duration Comparison (Next 7 Days)</h2>
+                    <canvas id="comparisonSunChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h2>💨 Wind Speed Comparison (Next 7 Days)</h2>
+                    <canvas id="comparisonWindChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Detailed Comparison Table -->
+            <div class="table-section">
+                <h2>📊 Detailed Daily Comparison</h2>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Metric</th>
+                                <th>Oneonta, NY</th>
+                                <th>Greenville, SC</th>
+                                <th>Difference</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparison-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
+
